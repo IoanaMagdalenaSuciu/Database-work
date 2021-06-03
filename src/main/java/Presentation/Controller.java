@@ -15,9 +15,14 @@ import start.OrderTable;
 import start.ProductTable;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.beans.IntrospectionException;
 import java.io.FileNotFoundException;
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This class control the application
@@ -39,7 +44,9 @@ public class Controller {
         ProductTable productTable = new ProductTable();
         OrderTable orderTable = new OrderTable();
         ClientTable clienTable = new ClientTable();
-    }
+
+        }
+
 
     /**
      * The main method

@@ -103,10 +103,12 @@ public class ClientBLL {
      * @param clients list of clients
      * @return matrix of objects
      */
-    public List<Object[]> getClients(List<Client> clients){
-        List<Object[]> result = new ArrayList<>();
+    public Object[][] getClients(List<Client> clients){
+        Object[][] result = new Object[clients.size()][];
+        int i = 0;
         for(Client client: clients){
-            result.add(new Object[]{client.getId(), client.getName(),client.getEmail(),client.getAddress()});
+            result[i] = (new Object[]{client.getId(), client.getName(),client.getEmail(),client.getAddress()});
+            i++;
         }
         return result;
     }

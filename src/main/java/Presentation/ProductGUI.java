@@ -8,6 +8,7 @@ import Model.Product;
 import start.ProductTable;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -140,10 +141,9 @@ public   class ProductGUI extends JFrame implements ActionListener {
 
     /**
      * Update table of products
-     * @param data Products data
-     * @param header The header of the table that contains the name of the product data
+     * @param model Table model
      */
-    public void updateTable(java.util.List<Object[]> data, List<String> header){
+    public void updateTable(DefaultTableModel model){
 
         Component[] componentList = mainPanel.getComponents();
         for(Component c : componentList){
@@ -154,7 +154,7 @@ public   class ProductGUI extends JFrame implements ActionListener {
         mainPanel.revalidate();
         mainPanel.repaint();
 
-        products = new JTable(data.toArray(new Object[][]{}), header.toArray(new String[]{}));
+        products = new JTable(model);
         // clients.setBackground(new Color(0xD6AD60));
         products.setRowSelectionAllowed(true);
         products.setFillsViewportHeight(true);
@@ -176,19 +176,19 @@ public   class ProductGUI extends JFrame implements ActionListener {
             int id = Integer.parseInt(products.getValueAt(row,0).toString());
             System.out.println(id);
             productBLL.deleteProduct(id);
-            updateTable(productBLL.getProducts(productBLL.findALl()), productTable.retrieveInfo());
+            updateTable(productTable.retrieveInfo(productBLL.getProducts(productBLL.findALl()), products));
         }
         if (e.getSource() == insert) {
             Product product = new Product(nameField.getText(), Float.parseFloat(priceField.getText()),Integer.parseInt(cantField.getText()));
 
             if(productBLL.insertProduct(product) != 0){
-                updateTable(productBLL.getProducts(productBLL.findALl()), productTable.retrieveInfo());
+                updateTable(productTable.retrieveInfo(productBLL.getProducts(productBLL.findALl()),products));
             }else{
                 JOptionPane.showMessageDialog(this, "The product could not be added to the database ","Error", JOptionPane.WARNING_MESSAGE);
             }
         }
         if (e.getSource() == view) {
-            updateTable(productBLL.getProducts(productBLL.findALl()), productTable.retrieveInfo());
+            updateTable(productTable.retrieveInfo(productBLL.getProducts(productBLL.findALl()),products));
         }
         if (e.getSource() == update){
             int row = products.getSelectedRow();
@@ -197,14 +197,14 @@ public   class ProductGUI extends JFrame implements ActionListener {
 
             System.out.println(product);
             if(productBLL.updateProduct(product) != 0){
-                updateTable(productBLL.getProducts(productBLL.findALl()), productTable.retrieveInfo());
+                updateTable( productTable.retrieveInfo(productBLL.getProducts(productBLL.findALl()),products));
             }else{
                 JOptionPane.showMessageDialog(this, "Could not update product ","Error", JOptionPane.WARNING_MESSAGE);
             }
         }
         if (e.getSource() == find) {
             if (productBLL.findProductById(Integer.parseInt(idText.getText())) != null) {
-                updateTable(productBLL.getProducts(productBLL.findProductById(Integer.parseInt(idText.getText()))), productTable.retrieveInfo());
+                updateTable(productTable.retrieveInfo(productBLL.getProducts(productBLL.findProductById(Integer.parseInt(idText.getText()))),products));
             } else {
                 JOptionPane.showMessageDialog(this, "The product with id =" + Integer.parseInt(idText.getText()) + " was not found!","Error", JOptionPane.WARNING_MESSAGE);
 

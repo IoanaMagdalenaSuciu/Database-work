@@ -2,6 +2,8 @@ package start;
 
 import Model.Orders;
 
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.util.List;
 /**
  * This class compute the header for the table in OrderGUI
@@ -9,9 +11,10 @@ import java.util.List;
 public class OrderTable extends TableDAO<Orders> {
     /**
      * Compute the String of fields of Order
-     * @return The header for table
+     * @return The table model
      */
-    public List<String> retrieveInfo() {
-        return super.retrieveInfo();
+    public DefaultTableModel retrieveInfo(Object[][] listObj, JTable table) {
+        return super.retrieveInfo(listObj, table);
+
     }
 }

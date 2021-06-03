@@ -28,8 +28,10 @@ public class FileWriter {
         document.add(p1);
         Paragraph p2 = new Paragraph("Client name " + order.getClientName());
         document.add(p2);
-        Paragraph p3 = new Paragraph("Product: "+ order.getProductName() + " quantity:  "+ order.getCant());
+        Paragraph p3 = new Paragraph("Product: "+ order.getProductName() );
+        Paragraph p4 = new Paragraph("Quantity:  "+ order.getCant());
         document.add(p3);
+        document.add(p4);
         document.close();
     }
 }

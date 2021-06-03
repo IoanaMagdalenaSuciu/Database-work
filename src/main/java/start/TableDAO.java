@@ -3,11 +3,16 @@ package start;
 
 
 import Model.Client;
+import Model.Product;
 
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 import java.awt.*;
 import java.beans.IntrospectionException;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
@@ -32,20 +37,23 @@ public class TableDAO<T> {
      * Get the field of a class and create the header for the table
      * @return List of fields
      */
-    public List<String> retrieveInfo() {
-        String[] header = new String[3000];
+    public DefaultTableModel retrieveInfo(Object[][] listObj, JTable table){
+        Object[] header = new Object[4];
+
+        DefaultTableModel model = new DefaultTableModel();
         int i = 0;
-        List<String> list = new ArrayList<String>();
+        List<Object> list = new ArrayList<Object>();
+        Object[][] data = new Object[1000][1000];
         for (Field field : type.getDeclaredFields()) {
-            try {
-                header[i] = field.getName();
-                list.add(field.getName());
+
+            header[i] = field.getName();
+            list.add(field.getName());
                 i++;
-            } catch (IllegalArgumentException e) {
-                e.printStackTrace();
-            }
+
         }
-        return list;
+
+        model.setDataVector(listObj, header);
+        return model;
     }
 
 

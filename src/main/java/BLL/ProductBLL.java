@@ -73,10 +73,13 @@ public class ProductBLL {
      * @param products list of products
      * @return matric of objects
      */
-    public List<Object[]> getProducts(List<Product> products){
-        List<Object[]> result = new ArrayList<>();
+    public Object[][] getProducts(List<Product> products){
+        Object[][] result = new Object[products.size()][];
+        int i = 0;
         for(Product product: products){
-            result.add(new Object[]{product.getId(), product.getName(),product.getPrice(),product.getCant()});
+            result[i] = new Object[]{product.getId(), product.getName(),product.getPrice(),product.getCant()};
+            i++;
+
         }
         return result;
     }

@@ -6,9 +6,12 @@ import Model.Client;
 import start.ClientTable;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.beans.IntrospectionException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 /**
@@ -21,7 +24,7 @@ public class ClientGUI extends JFrame implements ActionListener {
     JButton insert = new JButton("Insert");
     JButton update = new JButton("Update");
     JButton view = new JButton("View");
-    JTable clients ;
+    JTable clients = new JTable() ;
     ClientBLL clientBLL;
     ClientTable clienTable = new ClientTable();
     JLabel name = new JLabel("Name");
@@ -139,10 +142,10 @@ public class ClientGUI extends JFrame implements ActionListener {
 
     /**
      * Update the table of clients
-     * @param data Clients data
-     * @param header The header of the table that contains the name of the client data
+     * @param model The table model
+     *
      */
-    public void updateTable(List<Object[]> data, List<String> header){
+    public void updateTable(DefaultTableModel model){
 
         Component[] componentList = mainPanel.getComponents();
         for(Component c : componentList){
@@ -153,7 +156,7 @@ public class ClientGUI extends JFrame implements ActionListener {
         mainPanel.revalidate();
         mainPanel.repaint();
 
-        clients = new JTable(data.toArray(new Object[][]{}), header.toArray(new String[]{}));
+        clients = new JTable(model);
        // clients.setBackground(new Color(0xD6AD60));
         clients.setRowSelectionAllowed(true);
         clients.setFillsViewportHeight(true);
@@ -176,20 +179,21 @@ public class ClientGUI extends JFrame implements ActionListener {
             int id = Integer.parseInt(clients.getValueAt(row, 0).toString());
             System.out.println(id);
             clientBLL.deleteClient(id);
-            updateTable(clientBLL.getClients(clientBLL.findALl()), clienTable.retrieveInfo());
+            updateTable(clienTable.retrieveInfo(clientBLL.getClients(clientBLL.findALl()), clients));
+
         }
         if (e.getSource() ==insert) {
             Client client = new Client(nameField.getText(), emailFiled.getText(), addressField.getText());
 
             if (clientBLL.insertClient(client) != 0) {
-                updateTable(clientBLL.getClients(clientBLL.findALl()), clienTable.retrieveInfo());
+                updateTable(clienTable.retrieveInfo(clientBLL.getClients(clientBLL.findALl()),clients));
             } else {
                 JOptionPane.showMessageDialog(this, "The client could not be added to the database ", "Error", JOptionPane.WARNING_MESSAGE);
 
             }
         }
         if (e.getSource() == view) {
-            updateTable(clientBLL.getClients(clientBLL.findALl()), clienTable.retrieveInfo());
+            updateTable(clienTable.retrieveInfo(clientBLL.getClients(clientBLL.findALl()),clients) );
         }
         if (e.getSource() ==  update) {
             int row = clients.getSelectedRow();
@@ -197,7 +201,7 @@ public class ClientGUI extends JFrame implements ActionListener {
 
             System.out.println(client);
             if (clientBLL.updateClient(client) != 0) {
-                 updateTable(clientBLL.getClients(clientBLL.findALl()), clienTable.retrieveInfo());
+                 updateTable(clienTable.retrieveInfo(clientBLL.getClients(clientBLL.findALl()),clients));
             } else {
                 JOptionPane.showMessageDialog(this, " Could not update client ", "Error", JOptionPane.WARNING_MESSAGE);
 
@@ -206,7 +210,7 @@ public class ClientGUI extends JFrame implements ActionListener {
         if (e.getSource() ==  find) {
 
             if (clientBLL.findClientById(Integer.parseInt( idText.getText())) != null) {
-                 updateTable(clientBLL.getClients(clientBLL.findClientById(Integer.parseInt( idText.getText()))), clienTable.retrieveInfo());
+                 updateTable( clienTable.retrieveInfo(clientBLL.getClients(clientBLL.findClientById(Integer.parseInt( idText.getText()))),clients));
             } else {
                 JOptionPane.showMessageDialog(this, "The client with id =" + Integer.parseInt(idText.getText()) + " was not found!", "Error", JOptionPane.WARNING_MESSAGE);
             }

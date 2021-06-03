@@ -75,10 +75,12 @@ public class OrderBLL {
      * @param orders list of orders
      * @return matrix of objects
      */
-    public List<Object[]> getOrder(List<Orders> orders){
-        List<Object[]> result = new ArrayList<>();
+    public Object[][] getOrder(List<Orders> orders){
+        Object[][] result = new Object[orders.size()][];
+        int i = 0;
         for(Orders order: orders){
-            result.add(new Object[]{order.getId(), order.getClientName(),order.getProductName(),order.getCant()});
+            result[i] = (new Object[]{order.getId(), order.getClientName(),order.getProductName(),order.getCant()});
+            i++;
         }
         return result;
     }

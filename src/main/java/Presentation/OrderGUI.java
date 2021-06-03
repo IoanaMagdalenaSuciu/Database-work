@@ -10,6 +10,7 @@ import start.FileWriter;
 import start.OrderTable;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -160,10 +161,9 @@ public class OrderGUI extends JFrame implements ActionListener {
 
     /**
      * Update the table of orders
-     * @param data Orders data
-     * @param header The header of the table that contains the name of the order data
+     * @param model Table model
      */
-    public void updateTable(java.util.List<Object[]> data, List<String> header){
+    public void updateTable(DefaultTableModel model){
 
         Component[] componentList = mainPanel.getComponents();
         for(Component c : componentList){
@@ -174,7 +174,7 @@ public class OrderGUI extends JFrame implements ActionListener {
         mainPanel.revalidate();
         mainPanel.repaint();
 
-        orders = new JTable(data.toArray(new Object[][]{}), header.toArray(new String[]{}));
+        orders = new JTable(model);
         orders.setRowSelectionAllowed(true);
         orders.setFillsViewportHeight(true);
         JScrollPane scroll= new JScrollPane(orders);
@@ -198,7 +198,7 @@ public class OrderGUI extends JFrame implements ActionListener {
             int id = Integer.parseInt(orders.getValueAt(row,0).toString());
             System.out.println(id);
             orderBLL.deleteOrder(id);
-            updateTable(orderBLL.getOrder(orderBLL.findALl()), orderTable.retrieveInfo());
+            updateTable(orderTable.retrieveInfo(orderBLL.getOrder(orderBLL.findALl()), orders) );
         }
         if (e.getSource() == insert) {
 
@@ -210,7 +210,7 @@ public class OrderGUI extends JFrame implements ActionListener {
                         product.setCant(product.getCant()-1);
                         productBLL.updateProduct(product);
                         if(orderBLL.insertOrder(order) != 0){
-                            updateTable(orderBLL.getOrder(orderBLL.findALl()), orderTable.retrieveInfo());
+                            updateTable( orderTable.retrieveInfo(orderBLL.getOrder(orderBLL.findALl()), orders));
                             /*try {
                                 file.generateBill(order);
                             } catch (FileNotFoundException fileNotFoundException) {
@@ -235,7 +235,7 @@ public class OrderGUI extends JFrame implements ActionListener {
             }
         }
         if (e.getSource() == view) {
-            updateTable(orderBLL.getOrder(orderBLL.findALl()), orderTable.retrieveInfo());
+            updateTable(orderTable.retrieveInfo(orderBLL.getOrder(orderBLL.findALl()), orders) );
         }
         if (e.getSource() == update){
             int row = orders.getSelectedRow();
@@ -243,7 +243,7 @@ public class OrderGUI extends JFrame implements ActionListener {
 
             System.out.println(order);
             if(orderBLL.updateOrder(order) != 0){
-                updateTable(orderBLL.getOrder(orderBLL.findALl()), orderTable.retrieveInfo());
+                updateTable( orderTable.retrieveInfo(orderBLL.getOrder(orderBLL.findALl()), orders));
             }else{
                 JOptionPane.showMessageDialog(this, " Could not update order ","Error", JOptionPane.WARNING_MESSAGE);
 
@@ -252,7 +252,7 @@ public class OrderGUI extends JFrame implements ActionListener {
         if (e.getSource() == find) {
 
             if (orderBLL.findOrderById(Integer.parseInt(idText.getText())) != null) {
-                updateTable(orderBLL.getOrder(orderBLL.findOrderById(Integer.parseInt(idText.getText()))), orderTable.retrieveInfo());
+                updateTable(orderTable.retrieveInfo(orderBLL.getOrder(orderBLL.findOrderById(Integer.parseInt(idText.getText()))), orders));
             } else {
                 JOptionPane.showMessageDialog(this, "The order with id =" + Integer.parseInt(idText.getText()) + " was not found!","Error", JOptionPane.WARNING_MESSAGE);
             }
