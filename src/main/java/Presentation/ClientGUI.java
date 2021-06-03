@@ -179,21 +179,21 @@ public class ClientGUI extends JFrame implements ActionListener {
             int id = Integer.parseInt(clients.getValueAt(row, 0).toString());
             System.out.println(id);
             clientBLL.deleteClient(id);
-            updateTable(clienTable.retrieveInfo(clientBLL.getClients(clientBLL.findALl()), clients));
+            updateTable(clienTable.retrieveInfo(clientBLL.findALl()));
 
         }
         if (e.getSource() ==insert) {
             Client client = new Client(nameField.getText(), emailFiled.getText(), addressField.getText());
 
             if (clientBLL.insertClient(client) != 0) {
-                updateTable(clienTable.retrieveInfo(clientBLL.getClients(clientBLL.findALl()),clients));
+                updateTable(clienTable.retrieveInfo(clientBLL.findALl()));
             } else {
                 JOptionPane.showMessageDialog(this, "The client could not be added to the database ", "Error", JOptionPane.WARNING_MESSAGE);
 
             }
         }
         if (e.getSource() == view) {
-            updateTable(clienTable.retrieveInfo(clientBLL.getClients(clientBLL.findALl()),clients) );
+            updateTable(clienTable.retrieveInfo(clientBLL.findALl()) );
         }
         if (e.getSource() ==  update) {
             int row = clients.getSelectedRow();
@@ -201,7 +201,7 @@ public class ClientGUI extends JFrame implements ActionListener {
 
             System.out.println(client);
             if (clientBLL.updateClient(client) != 0) {
-                 updateTable(clienTable.retrieveInfo(clientBLL.getClients(clientBLL.findALl()),clients));
+                 updateTable(clienTable.retrieveInfo(clientBLL.findALl()));
             } else {
                 JOptionPane.showMessageDialog(this, " Could not update client ", "Error", JOptionPane.WARNING_MESSAGE);
 
@@ -210,7 +210,7 @@ public class ClientGUI extends JFrame implements ActionListener {
         if (e.getSource() ==  find) {
 
             if (clientBLL.findClientById(Integer.parseInt( idText.getText())) != null) {
-                 updateTable( clienTable.retrieveInfo(clientBLL.getClients(clientBLL.findClientById(Integer.parseInt( idText.getText()))),clients));
+                 updateTable( clienTable.retrieveInfo(clientBLL.findClientById(Integer.parseInt( idText.getText()))));
             } else {
                 JOptionPane.showMessageDialog(this, "The client with id =" + Integer.parseInt(idText.getText()) + " was not found!", "Error", JOptionPane.WARNING_MESSAGE);
             }

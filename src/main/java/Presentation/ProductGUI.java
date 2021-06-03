@@ -176,19 +176,19 @@ public   class ProductGUI extends JFrame implements ActionListener {
             int id = Integer.parseInt(products.getValueAt(row,0).toString());
             System.out.println(id);
             productBLL.deleteProduct(id);
-            updateTable(productTable.retrieveInfo(productBLL.getProducts(productBLL.findALl()), products));
+            updateTable(productTable.retrieveInfo(productBLL.findALl()));
         }
         if (e.getSource() == insert) {
             Product product = new Product(nameField.getText(), Float.parseFloat(priceField.getText()),Integer.parseInt(cantField.getText()));
 
             if(productBLL.insertProduct(product) != 0){
-                updateTable(productTable.retrieveInfo(productBLL.getProducts(productBLL.findALl()),products));
+                updateTable(productTable.retrieveInfo(productBLL.findALl()));
             }else{
                 JOptionPane.showMessageDialog(this, "The product could not be added to the database ","Error", JOptionPane.WARNING_MESSAGE);
             }
         }
         if (e.getSource() == view) {
-            updateTable(productTable.retrieveInfo(productBLL.getProducts(productBLL.findALl()),products));
+            updateTable(productTable.retrieveInfo(productBLL.findALl()));
         }
         if (e.getSource() == update){
             int row = products.getSelectedRow();
@@ -197,14 +197,14 @@ public   class ProductGUI extends JFrame implements ActionListener {
 
             System.out.println(product);
             if(productBLL.updateProduct(product) != 0){
-                updateTable( productTable.retrieveInfo(productBLL.getProducts(productBLL.findALl()),products));
+                updateTable( productTable.retrieveInfo(productBLL.findALl()));
             }else{
                 JOptionPane.showMessageDialog(this, "Could not update product ","Error", JOptionPane.WARNING_MESSAGE);
             }
         }
         if (e.getSource() == find) {
             if (productBLL.findProductById(Integer.parseInt(idText.getText())) != null) {
-                updateTable(productTable.retrieveInfo(productBLL.getProducts(productBLL.findProductById(Integer.parseInt(idText.getText()))),products));
+                updateTable(productTable.retrieveInfo(productBLL.findProductById(Integer.parseInt(idText.getText()))));
             } else {
                 JOptionPane.showMessageDialog(this, "The product with id =" + Integer.parseInt(idText.getText()) + " was not found!","Error", JOptionPane.WARNING_MESSAGE);
 

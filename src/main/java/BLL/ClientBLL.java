@@ -98,19 +98,5 @@ public class ClientBLL {
         return clientDAO.findAll();
     }
 
-    /**
-     * Convert a list of clients to a matrix of objects
-     * @param clients list of clients
-     * @return matrix of objects
-     */
-    public Object[][] getClients(List<Client> clients){
-        Object[][] result = new Object[clients.size()][];
-        int i = 0;
-        for(Client client: clients){
-            result[i] = (new Object[]{client.getId(), client.getName(),client.getEmail(),client.getAddress()});
-            i++;
-        }
-        return result;
-    }
 
 }

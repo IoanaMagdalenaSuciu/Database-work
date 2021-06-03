@@ -13,7 +13,7 @@ public class ProductTable extends TableDAO<Product> {
      * Compute the String of fields of Client
      * @return The header for table
      */
-    public DefaultTableModel retrieveInfo(Object[][] objectList, JTable table) {
-        return super.retrieveInfo(objectList, table);
+    public DefaultTableModel retrieveInfo(List<Product> objectList) {
+        return super.retrieveInfo(objectList);
     }
 }

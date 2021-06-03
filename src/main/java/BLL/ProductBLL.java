@@ -68,21 +68,7 @@ public class ProductBLL {
         productDAO.delete(id);
     }
 
-    /**
-     * Convert a list of products to a matrix of objects
-     * @param products list of products
-     * @return matric of objects
-     */
-    public Object[][] getProducts(List<Product> products){
-        Object[][] result = new Object[products.size()][];
-        int i = 0;
-        for(Product product: products){
-            result[i] = new Object[]{product.getId(), product.getName(),product.getPrice(),product.getCant()};
-            i++;
 
-        }
-        return result;
-    }
 
     /**
      * Search a product by name

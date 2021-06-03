@@ -15,8 +15,8 @@ public class ClientTable extends TableDAO<Client> {
      * Compute the String of fields of Client
      * @return The header for table
      */
-    public DefaultTableModel retrieveInfo(Object[][] objectList, JTable table)  {
-       return super.retrieveInfo(objectList, table);
+    public DefaultTableModel retrieveInfo(List<Client> objectList)  {
+       return super.retrieveInfo(objectList);
 
     }
 }

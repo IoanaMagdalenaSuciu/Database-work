@@ -16,6 +16,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -37,22 +38,37 @@ public class TableDAO<T> {
      * Get the field of a class and create the header for the table
      * @return List of fields
      */
-    public DefaultTableModel retrieveInfo(Object[][] listObj, JTable table){
+    public DefaultTableModel retrieveInfo(List<T> listObj){
         Object[] header = new Object[4];
-
-        DefaultTableModel model = new DefaultTableModel();
+        Object[][] result = new Object[listObj.size()][];
         int i = 0;
+        DefaultTableModel model = new DefaultTableModel();
+         i = 0;
         List<Object> list = new ArrayList<Object>();
-        Object[][] data = new Object[1000][1000];
         for (Field field : type.getDeclaredFields()) {
 
             header[i] = field.getName();
             list.add(field.getName());
                 i++;
-
         }
 
-        model.setDataVector(listObj, header);
+        i = 0;
+        Iterator<T> iterator = listObj.iterator();
+        while(iterator.hasNext()){
+            T value = iterator.next();
+            List<Object> objectList = new ArrayList<Object>();
+            for(Field field: value.getClass().getDeclaredFields()){
+                field.setAccessible(true);
+                try {
+                    objectList.add(field.get(value));
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+            }
+            result[i] = objectList.toArray();
+            i++;
+        }
+        model.setDataVector(result, header);
         return model;
     }
 

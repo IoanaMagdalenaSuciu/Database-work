@@ -70,20 +70,7 @@ public class OrderBLL {
     public List<Orders> findALl(){
         return orderDAO.findAll();
     }
-    /**
-     * Convert a list of orders to a matrix of objects
-     * @param orders list of orders
-     * @return matrix of objects
-     */
-    public Object[][] getOrder(List<Orders> orders){
-        Object[][] result = new Object[orders.size()][];
-        int i = 0;
-        for(Orders order: orders){
-            result[i] = (new Object[]{order.getId(), order.getClientName(),order.getProductName(),order.getCant()});
-            i++;
-        }
-        return result;
-    }
+
 
 
 

@@ -198,7 +198,7 @@ public class OrderGUI extends JFrame implements ActionListener {
             int id = Integer.parseInt(orders.getValueAt(row,0).toString());
             System.out.println(id);
             orderBLL.deleteOrder(id);
-            updateTable(orderTable.retrieveInfo(orderBLL.getOrder(orderBLL.findALl()), orders) );
+            updateTable(orderTable.retrieveInfo(orderBLL.findALl()) );
         }
         if (e.getSource() == insert) {
 
@@ -210,7 +210,7 @@ public class OrderGUI extends JFrame implements ActionListener {
                         product.setCant(product.getCant()-1);
                         productBLL.updateProduct(product);
                         if(orderBLL.insertOrder(order) != 0){
-                            updateTable( orderTable.retrieveInfo(orderBLL.getOrder(orderBLL.findALl()), orders));
+                            updateTable( orderTable.retrieveInfo(orderBLL.findALl()));
                             /*try {
                                 file.generateBill(order);
                             } catch (FileNotFoundException fileNotFoundException) {
@@ -235,7 +235,7 @@ public class OrderGUI extends JFrame implements ActionListener {
             }
         }
         if (e.getSource() == view) {
-            updateTable(orderTable.retrieveInfo(orderBLL.getOrder(orderBLL.findALl()), orders) );
+            updateTable(orderTable.retrieveInfo(orderBLL.findALl()));
         }
         if (e.getSource() == update){
             int row = orders.getSelectedRow();
@@ -243,7 +243,7 @@ public class OrderGUI extends JFrame implements ActionListener {
 
             System.out.println(order);
             if(orderBLL.updateOrder(order) != 0){
-                updateTable( orderTable.retrieveInfo(orderBLL.getOrder(orderBLL.findALl()), orders));
+                updateTable( orderTable.retrieveInfo(orderBLL.findALl()));
             }else{
                 JOptionPane.showMessageDialog(this, " Could not update order ","Error", JOptionPane.WARNING_MESSAGE);
 
@@ -252,7 +252,7 @@ public class OrderGUI extends JFrame implements ActionListener {
         if (e.getSource() == find) {
 
             if (orderBLL.findOrderById(Integer.parseInt(idText.getText())) != null) {
-                updateTable(orderTable.retrieveInfo(orderBLL.getOrder(orderBLL.findOrderById(Integer.parseInt(idText.getText()))), orders));
+                updateTable(orderTable.retrieveInfo(orderBLL.findOrderById(Integer.parseInt(idText.getText()))));
             } else {
                 JOptionPane.showMessageDialog(this, "The order with id =" + Integer.parseInt(idText.getText()) + " was not found!","Error", JOptionPane.WARNING_MESSAGE);
             }
